@@ -1,4 +1,6 @@
 import math
+import re
+import jieba
 import torch
 import numpy as np
 from tqdm import tqdm
@@ -10,7 +12,11 @@ def get_words(filepath):
         text = f.read()
     text1 = text.replace('\n', "<eos>")
     text2 = text1.strip()
-    words = text2.split()
+    seg_list = jieba.lcut_for_search(text2)
+    prog = re.compile(r"[a-z_A-Z0-9\u4e00-\u9fa5]")
+    words = [word for word in seg_list if prog.search(word)]
+    #words = text2.split()
+    print(words)
     return words
 
 
